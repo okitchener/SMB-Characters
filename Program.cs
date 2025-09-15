@@ -4,8 +4,16 @@ string path = Directory.GetCurrentDirectory() + "//nlog.config";
 // create instance of Logger
 var logger = LogManager.Setup().LoadConfigurationFromFile(path).GetCurrentClassLogger();
 
-//Barebones menu
-string? choice;
+string file = "mario.csv";
+// make sure the mario file exists
+if (!File.Exists(file))
+{
+    logger.Error("File does not exist: {File}", file);
+}
+else
+{
+    //menu
+    string? choice;
     do
     {
         // display choices to user
@@ -26,3 +34,4 @@ string? choice;
             // Display All Characters
         }
     } while (choice == "1" || choice == "2");
+}
