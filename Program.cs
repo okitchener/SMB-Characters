@@ -95,11 +95,31 @@ else
                     // input character year created
                     Console.WriteLine("Enter year created:");
                     string? yearCreatedStr = Console.ReadLine();
-                    if (UInt64.TryParse(yearCreatedStr, out UInt64 YearOfOrgin))
-                    {
-                        Console.WriteLine($"{Id}, {Name}, {Description}, {SpeciesValue}, {FirstAppearance}, {YearOfOrgin}");
-                    }
-                    else
+                   if (UInt64.TryParse(yearCreatedStr, out UInt64 YearOfOrgin))
+{
+    Console.WriteLine($"{Id}, {Name}, {Description}, {SpeciesValue}, {FirstAppearance}, {YearOfOrgin}");
+
+    // Add to lists
+    Ids.Add(Id);
+    Names.Add(Name);
+    Descriptions.Add(Description ?? "");
+    Species.Add(SpeciesValue ?? "");
+    FirstApperance.Add(FirstAppearance ?? "");
+    YearCreated.Add(YearOfOrgin);
+
+    // Append to CSV file
+    try
+    {
+        using StreamWriter sw = new(file, append: true);
+        sw.WriteLine($"{Id},{Name},{Description},{SpeciesValue},{FirstAppearance},{YearOfOrgin}");
+        logger.Info("Character added to file: {Name}", Name);
+    }
+    catch (Exception ex)
+    {
+        logger.Error("Failed to write to file: {Message}", ex.Message);
+    }
+}
+else
                     {
                         logger.Error("Invalid year created");
                     }
