@@ -69,11 +69,33 @@ else
         if (choice == "1")
         {
             // Add Character
+            Console.WriteLine("Enter new character name: ");
+            string? Name = Console.ReadLine();
+            if (!string.IsNullOrEmpty(Name))
+            {
+                // check for duplicate name
+                List<string> LowerCaseNames = Names.ConvertAll(n => n.ToLower());
+                if (LowerCaseNames.Contains(Name.ToLower()))
+                {
+                    logger.Info($"Duplicate name {Name}");
+                }
+                else
+                {
+                    // generate id - use max value in Ids + 1
+                    UInt64 Id = Ids.Max() + 1;
+                    Console.WriteLine($"{Id}, {Name}");
+                }
+            }
+            else
+            {
+                logger.Error("You must enter a name");
+            }
+        
         }
         else if (choice == "2")
         {
-           // Display All Characters
-               // loop thru Lists
+            // Display All Characters
+            // loop thru Lists
             for (int i = 0; i < Ids.Count; i++)
             {
                 // display character details
