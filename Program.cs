@@ -12,15 +12,9 @@ if (!File.Exists(file))
 }
 else
 {
-       // create parallel lists of character details
-    List<UInt64> Ids = [];
-    List<string> Names = [];
-    List<string> Descriptions = [];
-    List<string> Species = [];
-    List<string> FirstApperance = [];
-    List<UInt64> YearCreated = [];
-
-    // to populate the lists with data, read from the data file
+    // create list of characters
+    // to populate the list with data, read from the data file
+    List<Character> characters = [];
     try
     {
         StreamReader sr = new(file);
@@ -31,20 +25,22 @@ else
             string? line = sr.ReadLine();
             if (line is not null)
             {
+                Character character = new();
                 // character details are separated with comma(,)
                 string[] characterDetails = line.Split(',');
                 // 1st array element contains id
-                Ids.Add(UInt64.Parse(characterDetails[0]));
+                character.Id = UInt64.Parse(characterDetails[0]);
                 // 2nd array element contains character name
-                Names.Add(characterDetails[1]);
+                character.Name = characterDetails[1] ?? string.Empty;
                 // 3rd array element contains character description
-                Descriptions.Add(characterDetails[2]);
+                character.Description = characterDetails[2] ?? string.Empty;
                 // 4th array element contains character species
-                Species.Add(characterDetails[3]);
+                character.Species = characterDetails[3] ?? string.Empty;
                 // 5th array element contains character first appearance
-                FirstApperance.Add(characterDetails[4]);
+                character.FirstAppearance = characterDetails[4] ?? string.Empty;
                 // 6th array element contains character year created
-                YearCreated.Add(UInt64.Parse(characterDetails[5]));
+                character.YearCreated = UInt64.Parse(characterDetails[5]);
+                characters.Add(character);
             }
         }
         sr.Close();
@@ -54,7 +50,8 @@ else
         logger.Error(ex.Message);
     }
     //menu
-    string? choice;
+    /*
+    string ? choice;
     do
     {
         // display choices to user
@@ -83,7 +80,7 @@ else
                 {
                     // generate id - use max value in Ids + 1
                     UInt64 Id = Ids.Max() + 1;
-                       // input character description
+                    // input character description
                     Console.WriteLine("Enter description:");
                     string? Description = Console.ReadLine();
                     // input character species
@@ -95,31 +92,31 @@ else
                     // input character year created
                     Console.WriteLine("Enter year created:");
                     string? yearCreatedStr = Console.ReadLine();
-                   if (UInt64.TryParse(yearCreatedStr, out UInt64 YearOfOrgin))
-{
-    Console.WriteLine($"{Id}, {Name}, {Description}, {SpeciesValue}, {FirstAppearance}, {YearOfOrgin}");
+                    if (UInt64.TryParse(yearCreatedStr, out UInt64 YearOfOrgin))
+                    {
+                        Console.WriteLine($"{Id}, {Name}, {Description}, {SpeciesValue}, {FirstAppearance}, {YearOfOrgin}");
 
-    // Add to lists
-    Ids.Add(Id);
-    Names.Add(Name);
-    Descriptions.Add(Description ?? "");
-    Species.Add(SpeciesValue ?? "");
-    FirstApperance.Add(FirstAppearance ?? "");
-    YearCreated.Add(YearOfOrgin);
+                        // Add to lists
+                        Ids.Add(Id);
+                        Names.Add(Name);
+                        Descriptions.Add(Description ?? "");
+                        Species.Add(SpeciesValue ?? "");
+                        FirstApperance.Add(FirstAppearance ?? "");
+                        YearCreated.Add(YearOfOrgin);
 
-    // Append to CSV file
-    try
-    {
-        using StreamWriter sw = new(file, append: true);
-        sw.WriteLine($"{Id},{Name},{Description},{SpeciesValue},{FirstAppearance},{YearOfOrgin}");
-        logger.Info("Character added to file: {Name}", Name);
-    }
-    catch (Exception ex)
-    {
-        logger.Error("Failed to write to file: {Message}", ex.Message);
-    }
-}
-else
+                        // Append to CSV file
+                        try
+                        {
+                            using StreamWriter sw = new(file, append: true);
+                            sw.WriteLine($"{Id},{Name},{Description},{SpeciesValue},{FirstAppearance},{YearOfOrgin}");
+                            logger.Info("Character added to file: {Name}", Name);
+                        }
+                        catch (Exception ex)
+                        {
+                            logger.Error("Failed to write to file: {Message}", ex.Message);
+                        }
+                    }
+                    else
                     {
                         logger.Error("Invalid year created");
                     }
@@ -129,7 +126,7 @@ else
             {
                 logger.Error("You must enter a name");
             }
-        
+
         }
         else if (choice == "2")
         {
@@ -148,4 +145,5 @@ else
             }
         }
     } while (choice == "1" || choice == "2");
+    */
 }
